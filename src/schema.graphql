@@ -1,0 +1,79 @@
+"""Movie Collection that belongs"""
+type Collection {
+  id: ID!
+  name: String
+  poster_path: String
+  backdrop_path: String
+}
+
+"""Movie Genres"""
+type Genres {
+  id: ID!
+  name: String
+}
+
+"""Movie data"""
+type Movie {
+  adult: Boolean
+  backdrop_path: String
+  belongs_to_collection: Collection
+  budget: ID
+  genre_ids: [Float]
+  genres: [Genres]
+  homepage: String
+  id: ID!
+  imdb_id: String
+  original_language: String
+  original_title: String
+  overview: String
+  popularity: Float
+  poster_path: String
+  production_companies: [ProductionCompanies]
+  production_countries: [ProductionCountries]
+  release_date: String
+  revenue: Float
+  runtime: ID
+  spoken_languages: [SpokenLanguages]
+  status: String
+  tagline: String
+  title: String
+  video: Boolean
+  vote_average: Float
+  vote_count: Float
+}
+
+"""Movie Production Companies"""
+type ProductionCompanies {
+  id: ID!
+  name: String
+  logo_path: String
+  origin_country: String
+}
+
+"""Movie Production Countries"""
+type ProductionCountries {
+  iso_3166_1: ID!
+  name: String
+}
+
+"""The root of all queries"""
+type Query {
+  moviesUpcoming(page: Float): [Movie]
+  movie(movie_id: ID!): Movie
+  genres: [Genres]
+  moviesSearch(query: String!, page: Float!): Search
+}
+
+"""Search Movie"""
+type Search {
+  page: Float
+  total_results: Float
+  total_pages: Float
+  results: [Movie]
+}
+
+"""Movie Spoken Languages"""
+type SpokenLanguages {
+  iso_639_1: ID!
+  name: String
+}

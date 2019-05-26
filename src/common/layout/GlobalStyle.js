@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle  } from 'styled-components';
 import global from '../../helpers/Global'
 
 const GlobalStyle = createGlobalStyle`

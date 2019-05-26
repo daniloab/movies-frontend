@@ -1,15 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { keyframes } from 'styled-components';
+import { MdClose, MdSearch } from 'react-icons/md'
 
-import { history } from '../../helpers/History'
 import global from '../../helpers/Global'
 
-export const Title = styled.a``
-export const RightNavbar = styled.div``
-export const List = styled.ul``
-export const Item = styled.li``
+const fadein = keyframes`{
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}`
 
-export const WrapperLeftContent = styled.div`
+const fadeout = keyframes`
+    from { opacity: 1; }
+    to   { opacity: 0; display: none;}
+`
+
+const Title = styled.a``
+const RightNavbar = styled.div``
+const List = styled.ul``
+const Item = styled.li``
+
+const LeftNavBar = styled.div`
     color: white;
     font-weight: 600;
     font-size: 1.8rem;
@@ -21,7 +31,7 @@ export const WrapperLeftContent = styled.div`
     }
 `
 
-export const HeaderWrapper = styled.header`
+const HeaderWrapper = styled.header`
     top: 0;
     right: 0;
     left: 0;
@@ -49,15 +59,15 @@ export const HeaderWrapper = styled.header`
         align-items: center;
 
         li:hover{
+            cursor: pointer;
+            
+            svg{
                 cursor: pointer;
-                background: ${global.style.secondaryColor};
-                transition: all 0.3s ease-in-out;
-
-                svg {   
-                    color: ${global.style.primaryColor};
-                    transition: all 0.3s ease-in-out;
-                }
+                transform: scale(1.5);
             }
+        }
+
+        
     }
 
     ${List} {
@@ -73,6 +83,7 @@ export const HeaderWrapper = styled.header`
                 color: white;
                 font-size: 2rem;
                 cursor: default;
+                transition: all .2s ease-in-out;
             }
             
             &:hover {
@@ -84,14 +95,89 @@ export const HeaderWrapper = styled.header`
     }
 `;
 
-const Header = props => (
-    <>
-        <HeaderWrapper>
-            <WrapperLeftContent>
-                <Title href="/">{global.appName}</Title>
-            </WrapperLeftContent>
-        </HeaderWrapper>
-    </>
+const StyledSearchBox = styled.div`
+    display: ${props => props.change ? 'flex' : 'none'};
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    background: #fff;
+    z-index: 12;
+    border-radius: 0;
+    animation: ${props => props.change && `${fadein} 0.5s`}
+    
+    &:focus-within {
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        box-shadow: 0 0 0 0.2rem #f88a1a96; 
+    }
+`
+
+const SearchBox = ({ children, change }) => (
+    <StyledSearchBox
+        change={change}
+    >
+        {children}
+    </StyledSearchBox>
 )
+
+const SearchInput = styled.input`
+    background: transparent;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    font-family: Montserrat,sans-serif !important;
+    &:focus {
+        outline: none;           
+    }
+`
+
+const BtnClose = styled.button`
+    position: absolute;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #999;
+`
+
+const Header = props => {
+
+    const [changeHeader, setChangeHeader] = useState(false)
+
+    const handleChangeHeader = () => setChangeHeader(!changeHeader)
+    const handleChange = () => console.log('handleChangeInput')
+    const handleKeyUp = () => console.log('handleKeyUpInput')
+
+    return (
+        <>
+            <HeaderWrapper>
+                <StyledSearchBox change={changeHeader}>
+                    <BtnClose onClick={handleChangeHeader}>
+                        <MdClose />
+                    </BtnClose>
+                    <SearchInput
+                        onChange={handleChange}
+                        onKeyUp={handleKeyUp}
+                        type="text" placeholder="tell me the name of the movie and let the work with me..." />
+                </StyledSearchBox>
+                <LeftNavBar>
+                    <Title href="/">{global.appName}</Title>
+                </LeftNavBar>
+                <RightNavbar>
+                    <List>
+                        <Item>
+                            <MdSearch />
+                        </Item>
+                    </List>
+                </RightNavbar>
+            </HeaderWrapper>
+        </>
+    )
+}
 
 export default Header;
