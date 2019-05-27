@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
+import Movies from './features/home/Movies'
 import MoviesUpcoming from './features/home/MoviesUpcoming'
 import MovieDetails from './features/movie/MovieDetails'
 
@@ -17,7 +18,7 @@ const Routes = () => (
         <Header />
         <Container>
             <Switch>
-                <Route exact path="/" component={MoviesUpcoming} />
+                <Route exact path="/" component={Movies} />
                 <Route exact path="/movie/details" component={MovieDetails} />
             </Switch>
         </Container>
